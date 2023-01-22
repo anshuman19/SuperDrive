@@ -7,25 +7,35 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface NotesMapper {
     @Select("SELECT *  FROM NOTES WHERE userid = #{userid}")
-    Notes[] getNotesForUser(Integer userId);
+    Notes[] getNotesForUser(Integer userid);
 
     @Select("SELECT * FROM NOTES")
     Notes[] getNoteListings();
 
-    @Select("SELECT *  FROM NOTES WHERE noteid = #{noteId}")
-    Notes getNotes(Integer notesId);
-    @Select("SELECT * FROM NOTES WHERE noteid = #{noteId}")
-    Notes getNote(Integer noteId);
+    @Select("SELECT *  FROM NOTES WHERE noteid = #{noteid}")
+    Notes getNotes(Integer notesid);
+    @Select("SELECT * FROM NOTES WHERE noteid = #{noteid}")
+    Notes getNote(Integer noteid);
 
-
-    @Insert("INSERT INTO NOTES (notetitle, notedescription, userid) VALUES (#{notetitle}, #{notedescription}, #{userid})")
+    //System.out.println("inside note mapper");
+    //@Insert("INSERT INTO NOTES (notetitle = #{notetitle}, notedescription =  #{notedescription}, userid = #{userid}")
+    @Insert("insert into NOTES (" +
+            "notetitle, " +
+            "notedescription, " +
+            "userid) VALUES (" +
+            "#{notetitle}, " +
+            "#{noteDescription}, " +
+            "#{userid} )")
     @Options(useGeneratedKeys = true, keyProperty = "noteid")
     int insert(Notes notes);
 
     @Delete("DELETE FROM NOTES WHERE noteid = #{noteid}")
-    void deleteNote(Integer noteId);
+    void deleteNote(Integer noteid);
 
 
-    @Update("UPDATE NOTES SET notetitle = #{notetitle}, notdescription = #{notedescription} WHERE noteId = #{noteId}")
-    void updateNote(Integer noteId, String title, String description);
+    @Update("UPDATE NOTES " +
+            " SET notetitle = #{notetitle}, notedescription = #{notedescription} " +
+            " WHERE noteid = #{noteid}")
+    int updateNote(Notes notes);
+
 }

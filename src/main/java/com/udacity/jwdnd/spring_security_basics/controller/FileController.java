@@ -3,6 +3,7 @@ package com.udacity.jwdnd.spring_security_basics.controller;
 import com.udacity.jwdnd.spring_security_basics.mapper.UserMapper;
 import com.udacity.jwdnd.spring_security_basics.model.CredentialForm;
 import com.udacity.jwdnd.spring_security_basics.model.File;
+import com.udacity.jwdnd.spring_security_basics.model.FileForm;
 import com.udacity.jwdnd.spring_security_basics.model.NoteForm;
 import com.udacity.jwdnd.spring_security_basics.service.CredentialService;
 import com.udacity.jwdnd.spring_security_basics.service.FileService;
@@ -30,10 +31,13 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
 @Component
+@ControllerAdvice
 @RequestMapping("/files")
 public class FileController {
 
@@ -41,31 +45,40 @@ public class FileController {
     private FileService fileService;
 
 
-    public FileController() {
-
-    }
-
-    public FileController(FileService fileService) {
-        this.fileService = fileService;
-    }
+//    public FileController() {
+//
+//    }
+//
+//    public FileController(FileService fileService) {
+//        this.fileService = fileService;
+//    }
 
     private UserMapper userMapper;
     private NoteService noteService;
     private CredentialService credentialService;
 
 
-    public FileController(FileService fileService, UserMapper userMapper, NoteService noteService, CredentialService credentialService) {
-        this.fileService = fileService;
-        this.userMapper = userMapper;
-        this.noteService = noteService;
-        this.credentialService = credentialService;
-    }
+//    public FileController(FileService fileService, UserMapper userMapper, NoteService noteService, CredentialService credentialService) {
+//        this.fileService = fileService;
+//        this.userMapper = userMapper;
+//        this.noteService = noteService;
+//        this.credentialService = credentialService;
+//        System.out.println("Inside file controller constructor");
+//    }
 
+    @GetMapping("/displayFiles")
+    public String displayFiles( )
+    {
+
+        return "Hello. Files displayed" + this.fileService.getUploadedFiles().get(0).getFilename();
+    }
     @PostMapping("/upload")
     public String uploadFile(
             @RequestParam("fileUpload") MultipartFile fileUpload,
-            Authentication authentication
+            Authentication authentication, Model model
     ) {
+        System.out.println("upload called");
+
         String username = (String) authentication.getPrincipal();
 
         if (fileUpload.isEmpty()) {
@@ -82,10 +95,20 @@ public class FileController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        List<File> files = this.fileService.getUploadedFiles();
+        model.addAttribute("files",files);
+
+        System.out.println(model.asMap().size());
+        System.out.println(files.get(0).getFilename());
 
         return "redirect:/result?isSuccess=" + true;
     }
 
+    @ModelAttribute
+    public void addAttributes(Model model){
+
+        model.addAttribute("files", this.fileService.getUploadedFiles());
+    }
     @GetMapping("/delete")
     public String deleteFile(
             @RequestParam(required = false, name = "fileId") Integer fileId) {
@@ -95,7 +118,7 @@ public class FileController {
 
     @GetMapping("/download")
     public ResponseEntity<InputStreamResource> downloadFile(
-            @RequestParam(required = false, name = "fileId") Integer fileId){
+            @RequestParam( name = "fileId") Integer fileId){
 
         File file = this.fileService.getFileById(fileId);
 

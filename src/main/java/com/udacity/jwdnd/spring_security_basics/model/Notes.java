@@ -1,57 +1,56 @@
 package com.udacity.jwdnd.spring_security_basics.model;
 
 public class Notes {
-
-    private Integer nodeid;
+    private Integer noteid;
     private String notetitle;
-    private String notedescription;
-    private int userid;
+    private String noteDescription;
+    private Integer userid;
 
-    public Notes(Integer nodeid, String notetitle, String notedescription, int userid) {
-        this.nodeid = nodeid;
-        this.notetitle = notetitle;
-        this.notedescription = notedescription;
+    public Notes(Integer noteid, String noteTitle, String noteDescription, Integer userid) {
+        this.noteid = noteid;
+        this.notetitle = noteTitle;
+        this.noteDescription = noteDescription;
         this.userid = userid;
     }
 
-    public Notes(String notetitle, String notedescription) {
-        this.notetitle = notetitle;
-        this.notedescription = notedescription;
+    public Notes(String noteTitle, String noteDescription) {
+        this.notetitle = noteTitle;
+        this.noteDescription = noteDescription;
     }
 
     public Notes() {
 
     }
 
-    public Integer getNodeid() {
-        return nodeid;
+    public Integer getNoteid() {
+        return noteid;
     }
 
-    public void setNodeid(Integer nodeid) {
-        this.nodeid = nodeid;
+    public void setNoteid(Integer nodeid) {
+        this.noteid = nodeid;
     }
 
     public String getNotetitle() {
         return notetitle;
     }
 
-    public void setNotetitle(String notetitle) {
-        this.notetitle = notetitle;
+    public void setNotetitle(String noteTitle) {
+        this.notetitle = noteTitle;
     }
 
-    public String getNotedescription() {
-        return notedescription;
+    public String getNoteDescription() {
+        return noteDescription;
     }
 
-    public void setNotedescription(String notedescription) {
-        this.notedescription = notedescription;
+    public void setNoteDescription(String noteDescription) {
+        this.noteDescription = noteDescription;
     }
 
-    public int getUserid() {
+    public Integer getUserid() {
         return userid;
     }
 
-    public void setUserid(int userid) {
+    public void setUserid(Integer userid) {
         this.userid = userid;
     }
 }

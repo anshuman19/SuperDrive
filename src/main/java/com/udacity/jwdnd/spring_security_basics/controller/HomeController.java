@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,13 +29,18 @@ public class HomeController {
     }
 
     @GetMapping
-    public String home(@ModelAttribute("note") NoteForm note, @ModelAttribute("credential") CredentialForm credentialForm, Model model, Authentication authentication) {
+    public String home(@ModelAttribute("credential") CredentialForm credentialForm, Model model, Authentication authentication) {
         String username = authentication.getName();
         User user = userMapper.getUser(username);
         if(user != null) {
             int userId = user.getUserId();
-            model.addAttribute("notes", noteService.getUserNote(userId));
+            Notes n = new Notes();
+            n.setUserid(user.getUserid());
+            model.addAttribute("notes", n);
+            ArrayList<File> files = new ArrayList<>();
+            files.add(new File());
             model.addAttribute("files", fileService.getUploadedFiles());
+
             model.addAttribute("credentials", credentialsService.getUserCredentials(userId));
             return "home";
         }

@@ -4,9 +4,7 @@ import com.udacity.jwdnd.spring_security_basics.mapper.NotesMapper;
 import com.udacity.jwdnd.spring_security_basics.mapper.UserMapper;
 import com.udacity.jwdnd.spring_security_basics.model.Notes;
 import org.springframework.stereotype.Service;
-
 @Service
-
 public class NoteService {
     private final UserMapper userMapper;
     private final NotesMapper notesMapper;
@@ -16,10 +14,15 @@ public class NoteService {
         this.userMapper = userMapper;
     }
 
-    public void addNote(String title, String description, String username){
-        Integer userId = userMapper.getUser(username).getUserid();
-        Notes note = new Notes(0, title, description, userId);
-        notesMapper.insert(note);
+    public int addNote(Notes notes){
+        int id;
+        if(notes.getNoteid() == null){
+            id = notesMapper.insert(notes);
+        } else {
+            id = notesMapper.updateNote(notes);
+        }
+
+        return id;
     }
     public Notes[] getNoteListings(Integer userid){
         return notesMapper.getNotesForUser(userid);
@@ -32,11 +35,7 @@ public class NoteService {
         notesMapper.deleteNote(noteId);
     }
 
-    public void updateNote(Integer noteId, String title, String description) {
-        notesMapper.updateNote(noteId, title, description);
-    }
-
-    public Object getUserNote(int userId) {
-        return this.notesMapper.getNote(userId);
+    public Notes getUserNote(int userid) {
+        return this.notesMapper.getNote(userid);
     }
 }

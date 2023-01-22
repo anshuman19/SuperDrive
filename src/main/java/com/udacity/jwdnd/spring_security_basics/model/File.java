@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.spring_security_basics.model;
 
 public class File {
-    private Integer fileId;
+    public Integer fileId;
     private String filename;
     private String contenttype;
     private String filesize;
