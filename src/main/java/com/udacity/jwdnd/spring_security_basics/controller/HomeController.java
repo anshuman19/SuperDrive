@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -29,7 +30,7 @@ public class HomeController {
     }
 
     @GetMapping
-    public String home(@ModelAttribute("credential") CredentialForm credentialForm, Model model, Authentication authentication) {
+    public String home(@ModelAttribute("credential") CredentialForm credentialForm,Model model, Authentication authentication) {
         String username = authentication.getName();
         User user = userMapper.getUser(username);
         if(user != null) {
@@ -38,10 +39,14 @@ public class HomeController {
             n.setUserid(user.getUserid());
             model.addAttribute("notes", n);
             ArrayList<File> files = new ArrayList<>();
+            List<Notes> allNotes = List.of(noteService.getNoteListings(userId));
             files.add(new File());
+            model.addAttribute("allNotes",allNotes);
             model.addAttribute("files", fileService.getUploadedFiles());
-
-            model.addAttribute("credentials", credentialsService.getUserCredentials(userId));
+            //List<Credential> credentials = credentialsService.getAllCredentials(userId);
+            model.addAttribute("credentials", credentialsService.getAllCredentials(userId));
+            //List<Credential> newcredentials = credentialsService.getAllCredentials(userId);
+            //model.addAttribute("newcredentials", newcredentials);
             return "home";
         }
         return "signup";

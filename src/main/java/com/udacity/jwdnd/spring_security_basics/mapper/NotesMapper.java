@@ -34,7 +34,7 @@ public interface NotesMapper {
 
 
     @Update("UPDATE NOTES " +
-            " SET notetitle = #{notetitle}, notedescription = #{notedescription} " +
+            " SET notetitle = #{notetitle}, notedescription = #{noteDescription} " +
             " WHERE noteid = #{noteid}")
     int updateNote(Notes notes);
 

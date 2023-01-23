@@ -77,19 +77,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="note: ${Notes}">
+                        <tr th:each="note: ${allNotes}">
                             <td>
                                 <button id="btnEditNote" type="button" class="btn btn-success"
-                                        th:data-id="${note.getnoteId()}"
-                                        th:data-title="${note.getnoteTitle()}"
-                                        th:data-description="${note.getnoteDescription()}"
+                                        th:data-id="${note.noteid}"
+                                        th:data-title="${note.notetitle}"
+                                        th:data-description="${note.noteDescription}"
                                         th:onClick="showNoteModal(this.getAttribute('data-id'), this.getAttribute('data-title'), this.getAttribute('data-description'))">
                                     Edit
                                 </button>
-                                <a id="ancDeleteNote" class="btn btn-danger" th:href="@{/notes/delete/{noteId}(noteId = ${note.getnoteId()})}" >Delete</a>
+                                <a id="ancDeleteNote" class="btn btn-danger"
+                                   th:href="@{/notes/delete(id=${note.noteid})}">Delete</a>
                             </td>
-                            <th id="show-note-title" scope="row" th:text="${note.notetitle}" class="notetitle" name="notetitle">Example Note Title</th>
-                            <td id="show-note-description" th:text="${note.noteDescription}" class="notedescription" name="noteDescription">Example Note Description </td>
+                            <th id="tableNoteTitle" scope="row" th:text="${note.getNotetitle()}">Example Note Title</th>
+                            <td id="tableNoteDescription" th:text="${note.getNoteDescription()}">Example Note Description</td>
                         </tr>
                         </tbody>
                     </table>
@@ -107,6 +108,7 @@
                             <div class="modal-body">
                                 <form action="#" method="POST" th:action="@{/notes/save}" th:object="${notes}">
                                     <input type="hidden" name="userid" th:field="*{userid}" id="user-id">
+                                    <input type="hidden" name="noteid" th:field="*{noteid}" id="note-id">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>
                                         <input type="text" name= "notetitle" class="form-control" id="note-title" maxlength="20" th:field="*{notetitle}" required >
@@ -177,7 +179,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST" th:action="@{/credentials/submit-credential}" th:object="${newCredential}">
+                                <form action="#" method="POST" th:action="@{/credentials/submit-credential}" th:object="${newcredentials}">
                                     <input type="hidden" name="credentialId" field="*{credentialId}" id="credential-id">
                                     <div class="form-group">
                                         <label for="credential-url" class="col-form-label">URL</label>

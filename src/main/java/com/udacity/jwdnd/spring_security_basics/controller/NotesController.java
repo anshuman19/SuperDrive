@@ -21,11 +21,11 @@ public class NotesController {
 
     @PostMapping("/save")
     public String addNote(Authentication authentication, @ModelAttribute("notes") Notes notes, Model model){
-        System.out.println("Inside Note controller");
-        System.out.println(notes.getNoteid());
-        System.out.println(notes.getNotetitle());
-        System.out.println(notes.getNoteDescription());
-        System.out.println(notes.getUserid());
+//        System.out.println("Inside Note controller");
+//        System.out.println(notes.getNoteid());
+//        System.out.println(notes.getNotetitle());
+//        System.out.println(notes.getNoteDescription());
+//        System.out.println(notes.getUserid());
 
 
         Boolean isSuccess = noteService.addNote(notes) > 0;
@@ -33,9 +33,10 @@ public class NotesController {
     }
 
     @GetMapping("/delete")
-    public String deleteNote(@RequestParam("id") int id){
+    public String deleteNote(@RequestParam("id") Integer id){
         Boolean isSuccess = id > 0;
-
+        System.out.println("DELETE");
+        System.out.println(id);
         if(isSuccess){
             noteService.deleteNote(id);
         }

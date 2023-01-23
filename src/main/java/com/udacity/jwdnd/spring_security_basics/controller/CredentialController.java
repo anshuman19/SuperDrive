@@ -16,46 +16,74 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.SecureRandom;
 import java.util.Base64;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 
-
-@RequestMapping("/home/credentials")
+@RequestMapping("/credentials")
 @Controller
-public class  CredentialController {
-    private CredentialService credentialService;
-    private UserMapper userMapper;
+public class CredentialController {
 
-    public CredentialController(CredentialService credentialService, UserMapper userMapper) {
+    private Logger logger = LoggerFactory.getLogger(CredentialController.class);
+
+    private final CredentialService credentialService;
+    private final EncryptionService encryptionService;
+    private final UserService userService;
+
+    public CredentialController(CredentialService credentialService, EncryptionService encryptionService, UserService userService) {
         this.credentialService = credentialService;
-        this.userMapper = userMapper;
+        this.encryptionService = encryptionService;
+        this.userService = userService;
     }
 
-    @PostMapping
-    public String handleAddUpdateCredentials(Authentication authentication, Credential credential){
-        String loggedInUserName = (String) authentication.getPrincipal();
-        User user = userMapper.getUser(loggedInUserName);
-        Integer userId = user.getUserid();
+    @PostMapping("submit-credential")
+    public String submitCredentials(
+            @ModelAttribute("newCredential") CredentialForm newCredential,
+            Authentication authentication,
+            Model model) {
 
-        if (credential.getCredentialid() != null) {
-            credentialService.editCredentials(credential);
+        String username = (String) authentication.getName();
+        String newUrl = newCredential.getUrl();
+        String credentialIdStr = newCredential.getCredentialId();
+        String password = newCredential.getPassword();
+        System.out.println("submitCredential");
+        System.out.println(username);
+        System.out.println(newUrl);
+        System.out.println(credentialIdStr);
+        System.out.println(password);
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[16];
+        random.nextBytes(key);
+        String encodedKey = Base64.getEncoder().encodeToString(key);
+        String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
+
+
+        if(credentialIdStr.isEmpty()){
+            credentialService.addCredential(newUrl, username, newCredential.getUsername(), encodedKey,password, encryptedPassword);
         } else {
-            credentialService.addCredentials(credential, userId);
+            Credential credentialExists = getCredential(Integer.parseInt(credentialIdStr));
+            credentialService.update(credentialExists.getCredentialId(), newCredential.getUsername(), newUrl, encodedKey, encryptedPassword);
         }
 
-        return "redirect:/result?success";
+
+        return "redirect:/result";
+
     }
 
-    @GetMapping("/delete")
-    public String deleteCredentials(@RequestParam("id") int credentialid, Authentication authentication, RedirectAttributes redirectAttributes){
-        String loggedInUserName = (String) authentication.getPrincipal();
-        User user = userMapper.getUser(loggedInUserName);
-
-        if(credentialid > 0){
-            credentialService.deleteCredentials(credentialid);
-            return "redirect:/result?success";
-        }
+    @GetMapping(value = "/view-credential/{credentialId}")
+    public Credential getCredential(@PathVariable Integer credentialId){
+        return credentialService.getCredential(credentialId);
+    }
 
 
-        redirectAttributes.addAttribute("error", "Unable to delete the credentials.");
-        return "redirect:/result?error";
+
+    @GetMapping(value = "/delete-credential/{credentialId}")
+    public String deleteCredentials(@ModelAttribute("credentialStore") CredentialStore credentialStore,
+                                    @RequestParam(required = false, name = "credentialId") Integer credentialId,
+                                    Authentication authentication,
+                                    Model model){
+
+        Boolean isSuccess = credentialService.deleteCredentials(credentialId);
+
+        return "redirect:/result?isSuccess=" + isSuccess;
     }
 }

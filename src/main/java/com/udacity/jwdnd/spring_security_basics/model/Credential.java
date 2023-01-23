@@ -2,45 +2,31 @@ package com.udacity.jwdnd.spring_security_basics.model;
 
 public class Credential {
 
-    private Integer credentialid;
+    private Integer credentialId;
     private String url;
-    private String userName;
+    private String username;
     private String key;
     private String password;
     private Integer userid;
-    private String unencodedPassword;
+    private String unencodedpassword;
 
-    public Credential(Integer credentialid, String url, String userName, String key, String password, Integer userid) {
-        this.credentialid = credentialid;
+    public Credential(Integer credentialId, String url, String username, String key, String password,
+                      Integer userid) {
+        this.credentialId = credentialId;
         this.url = url;
-        this.userName = userName;
+        this.username = username;
         this.key = key;
         this.password = password;
         this.userid = userid;
+        //this.unencodedpassword = unencodedPassword;
     }
 
-
-
-    public Credential(String url, String userName, String password) {
-        this.url = url;
-        this.userName = userName;
-        this.password = password;
+    public Integer getCredentialId() {
+        return credentialId;
     }
 
-    public Credential(String userName) {
-        this.userName = userName;
-    }
-
-    public Credential() {
-
-    }
-
-    public Integer getCredentialid() {
-        return credentialid;
-    }
-
-    public void setCredentialid(Integer credentialid) {
-        this.credentialid = credentialid;
+    public void setCredentialId(Integer credentialId) {
+        this.credentialId = credentialId;
     }
 
     public String getUrl() {
@@ -51,17 +37,21 @@ public class Credential {
         this.url = url;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getKey() {
         return key;
     }
+
+
+
+
 
     public void setKey(String key) {
         this.key = key;
@@ -83,7 +73,11 @@ public class Credential {
         this.userid = userid;
     }
 
-    public void setUnencodedPassword(String unencodedPassword) {
-        this.unencodedPassword = unencodedPassword;
+    public String getUnencodedpassword() {
+        return unencodedpassword;
+    }
+
+    public void setUnencodedpassword(String unencodedPassword) {
+        this.unencodedpassword = unencodedPassword;
     }
 }
