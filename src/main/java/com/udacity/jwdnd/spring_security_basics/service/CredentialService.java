@@ -27,9 +27,9 @@ public class CredentialService {
     }
 
     public void addCredential(String url, String username, String credentialUserName,
-                              String key, String password,String encodedpassword) {
+                              String key, String encryptedPassword) {
         Integer userid = userMapper.getUser(username).getUserid();
-        Credential credential = new Credential(0, url, credentialUserName, key, password, userid);
+        Credential credential = new Credential(0, url, credentialUserName, key, encryptedPassword, userid);
         credentialMapper.insert(credential);
     }
 
@@ -44,7 +44,12 @@ public class CredentialService {
         System.out.println(userid);
         System.out.println(credentialList);
         for (Credential credential : credentialList) {
-            credential.setUnencodedpassword(encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
+            System.out.println("credentialId: "+ credential.getCredentialId());
+            System.out.println("url: "+credential.getUrl());
+            System.out.println("key: "+credential.getKey());
+            System.out.println("password: " + credential.getEncodedPassword());
+            //credential.setUnencodedpassword(encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
+            credential.setPassword(encryptionService.decryptValue(credential.getEncodedPassword(),credential.getKey()));
         }
 
         return credentialList;
@@ -54,7 +59,7 @@ public class CredentialService {
         return credentialMapper.delete(credentialId);
     }
 
-    public void update(Integer credentialId, String newUsername, String newUrl, String key, String newPassword){
-        credentialMapper.update(credentialId, newUsername, newUrl, key, newPassword);
+    public void update(Integer credentialId, String newUsername, String newUrl, String key, String encryptedPassword){
+        credentialMapper.update(credentialId, newUsername, newUrl, key, encryptedPassword);
     }
 }

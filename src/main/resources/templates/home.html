@@ -154,16 +154,16 @@
                                         th:data-id="${credential.getCredentialId()}"
                                         th:data-url="${credential.getUrl()}"
                                         th:data-username="${credential.getUsername()}"
-                                        th:data-password="${encryptionService.decryptValue(credential.password, credential.key)}"
+                                        th:data-password="${credential.getPassword()}"
                                         th:onclick="showCredentialModal(this.getAttribute('data-id'), this.getAttribute('data-url'), this.getAttribute('data-username'), this.getAttribute('data-password'))">
                                     Edit
                                 </button>
                                 <!-- Delete credential -->
-                                <a id="btnDeleteCred" class="btn btn-danger" th:href="@{/delete-credential/{credentialId}}(credentialId = ${credential.getCredentialid()})" >Delete</a>
+                                <a id="btnDeleteCred" class="btn btn-danger" th:href="@{credentials/delete-credential(credentialId=${credential.getCredentialId()})}">Delete</a>
                             </td>
                             <th id="cred-url-title" scope="row" th:text="${credential.getUrl()}" class="credentialUrl" name="credentialUrl">Example Credential URL</th>
                             <td id="cred-username-title" th:text="${credential.getUsername()}" class="credentialUsername" name="credentialUsername">Example Credential Username</td>
-                            <td id="cred-password-title" th:text="${credential.getPassword()}" class="credentialPassword" name="credentialPassword">Example Credential Password</td>
+                            <td id="cred-password-title" th:text="${credential.getEncodedPassword()}" class="credentialPassword" name="credentialPassword">Example Credential Password</td>
                         </tr>
                         </tbody>
                     </table>

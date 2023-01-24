@@ -8,15 +8,17 @@ public class Credential {
     private String key;
     private String password;
     private Integer userid;
-    private String unencodedpassword;
+    //private String unencodedpassword;
+    private String encodedPassword;
 
-    public Credential(Integer credentialId, String url, String username, String key, String password,
+    public Credential(Integer credentialId, String url, String username, String key, String encodedPassword,
                       Integer userid) {
         this.credentialId = credentialId;
         this.url = url;
         this.username = username;
         this.key = key;
-        this.password = password;
+        //this.password = password;
+        this.encodedPassword = encodedPassword;
         this.userid = userid;
         //this.unencodedpassword = unencodedPassword;
     }
@@ -73,11 +75,17 @@ public class Credential {
         this.userid = userid;
     }
 
-    public String getUnencodedpassword() {
-        return unencodedpassword;
+//    public String getUnencodedpassword() {
+//        return unencodedpassword;
+//    }
+    public String getEncodedPassword() {
+        return encodedPassword;
     }
 
-    public void setUnencodedpassword(String unencodedPassword) {
-        this.unencodedpassword = unencodedPassword;
+//    public void setUnencodedpassword(String unencodedPassword) {
+//        this.unencodedpassword = unencodedPassword;
+//    }
+    public void setEncodedPassword(String encodedPassword) {
+        this.encodedPassword = encodedPassword;
     }
 }

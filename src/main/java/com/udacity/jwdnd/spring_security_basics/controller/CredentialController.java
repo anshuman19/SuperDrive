@@ -41,24 +41,28 @@ public class CredentialController {
             Authentication authentication,
             Model model) {
 
+        System.out.println("submit-credential called");
+        System.out.println(newCredential.getCredentialId() + " " + newCredential.getUrl());
         String username = (String) authentication.getName();
         String newUrl = newCredential.getUrl();
         String credentialIdStr = newCredential.getCredentialId();
         String password = newCredential.getPassword();
         System.out.println("submitCredential");
-        System.out.println(username);
-        System.out.println(newUrl);
-        System.out.println(credentialIdStr);
-        System.out.println(password);
+        System.out.println("username: "+username);
+        System.out.println("newUrl: "+newUrl);
+        System.out.println("credentialIdstr: "+credentialIdStr);
+        System.out.println("password: "+password);
         SecureRandom random = new SecureRandom();
         byte[] key = new byte[16];
         random.nextBytes(key);
         String encodedKey = Base64.getEncoder().encodeToString(key);
         String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
 
+        System.out.println("encryptedPassword: "+ encryptedPassword);
+
 
         if(credentialIdStr.isEmpty()){
-            credentialService.addCredential(newUrl, username, newCredential.getUsername(), encodedKey,password, encryptedPassword);
+            credentialService.addCredential(newUrl, username, newCredential.getUsername(), encodedKey,encryptedPassword);
         } else {
             Credential credentialExists = getCredential(Integer.parseInt(credentialIdStr));
             credentialService.update(credentialExists.getCredentialId(), newCredential.getUsername(), newUrl, encodedKey, encryptedPassword);
@@ -76,12 +80,12 @@ public class CredentialController {
 
 
 
-    @GetMapping(value = "/delete-credential/{credentialId}")
+    @GetMapping(value = "/delete-credential")
     public String deleteCredentials(@ModelAttribute("credentialStore") CredentialStore credentialStore,
-                                    @RequestParam(required = false, name = "credentialId") Integer credentialId,
+                                    @RequestParam("credentialId") Integer credentialId,
                                     Authentication authentication,
                                     Model model){
-
+        System.out.println("Inside delete credential");
         Boolean isSuccess = credentialService.deleteCredentials(credentialId);
 
         return "redirect:/result?isSuccess=" + isSuccess;
