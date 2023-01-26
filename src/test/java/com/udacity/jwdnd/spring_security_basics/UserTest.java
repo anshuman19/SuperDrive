@@ -92,7 +92,6 @@ class UserTest {
         Homepage homePage = new Homepage(driver);
         homePage.logout();
 
-        driver.get("http://localhost:" + this.port + "/home");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         Assertions.assertEquals("Login", driver.getTitle());
     }
