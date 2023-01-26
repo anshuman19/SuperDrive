@@ -40,14 +40,14 @@ public class CredentialService {
     public List<Credential> getAllCredentials(int userid) {
 
         List<Credential> credentialList= credentialMapper.getAllCredentials(userid);
-        System.out.println("get all credential function");
-        System.out.println(userid);
-        System.out.println(credentialList);
+        //System.out.println("get all credential function");
+        //System.out.println(userid);
+        //System.out.println(credentialList);
         for (Credential credential : credentialList) {
-            System.out.println("credentialId: "+ credential.getCredentialId());
-            System.out.println("url: "+credential.getUrl());
-            System.out.println("key: "+credential.getKey());
-            System.out.println("password: " + credential.getEncodedPassword());
+            //System.out.println("credentialId: "+ credential.getCredentialId());
+            //System.out.println("url: "+credential.getUrl());
+            //System.out.println("key: "+credential.getKey());
+            //System.out.println("password: " + credential.getEncodedPassword());
             //credential.setUnencodedpassword(encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
             credential.setPassword(encryptionService.decryptValue(credential.getEncodedPassword(),credential.getKey()));
         }

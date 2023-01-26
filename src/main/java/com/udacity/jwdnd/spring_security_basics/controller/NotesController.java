@@ -35,8 +35,8 @@ public class NotesController {
     @GetMapping("/delete")
     public String deleteNote(@RequestParam("id") Integer id){
         Boolean isSuccess = id > 0;
-        System.out.println("DELETE");
-        System.out.println(id);
+        //System.out.println("DELETE");
+        //System.out.println(id);
         if(isSuccess){
             noteService.deleteNote(id);
         }

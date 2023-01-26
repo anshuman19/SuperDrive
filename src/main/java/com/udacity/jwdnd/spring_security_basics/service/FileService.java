@@ -36,8 +36,9 @@ public class FileService {
         String contentType = file.getContentType();
         String fileSize = String.valueOf(file.getSize());
         String fileName = file.getOriginalFilename();
-
-        this.fileMapper.insert(new File(null, fileName, contentType, fileSize, userId, fileData));
+        if (file.getSize() / (1024 * 1024) <= 1){
+            this.fileMapper.insert(new File(null, fileName, contentType, fileSize, userId, fileData));
+    }
 
         return true;
     }

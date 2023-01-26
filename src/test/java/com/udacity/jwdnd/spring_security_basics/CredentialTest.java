@@ -35,7 +35,7 @@ class CredentialTest extends SpringSecurityBasicsApplicationTests {
         Credential credential = homePage.getFirstCredential();
         Assertions.assertEquals(url, credential.getUrl());
         Assertions.assertEquals(username, credential.getUsername());
-        Assertions.assertNotEquals(password, credential.getPassword());
+        Assertions.assertNotEquals(password, credential.getEncodedPassword());
     }
 
     private void createCredential(String url, String username, String password, Homepage homePage) {
@@ -76,7 +76,7 @@ class CredentialTest extends SpringSecurityBasicsApplicationTests {
         Credential modifiedCredential = homePage.getFirstCredential();
         Assertions.assertEquals(newUrl, modifiedCredential.getUrl());
         Assertions.assertEquals(newCredentialUsername, modifiedCredential.getUsername());
-        String modifiedCredentialPassword = modifiedCredential.getPassword();
+        String modifiedCredentialPassword = modifiedCredential.getEncodedPassword();
         Assertions.assertNotEquals(newPassword, modifiedCredentialPassword);
         Assertions.assertNotEquals(firstEncryptedPassword, modifiedCredentialPassword);
         homePage.deleteCredential();
@@ -93,7 +93,7 @@ class CredentialTest extends SpringSecurityBasicsApplicationTests {
         createCredential(BEATLES_URL, MCCARTNEY_USERNAME, MCCARTNEY_PASSWORD, homePage);
         createCredential(RINGO_URL, RINGO_USERNAME, RINGO_PASSWORD, homePage);
         createCredential("http://www.johnlennon.com/", "aman01", "aman09", homePage);
-        Assertions.assertFalse(homePage.noCredentials(driver));
+        Assertions.assertTrue(homePage.noCredentials(driver));
         homePage.deleteCredential();
         ResultPage resultPage = new ResultPage(driver);
         resultPage.clickOk();

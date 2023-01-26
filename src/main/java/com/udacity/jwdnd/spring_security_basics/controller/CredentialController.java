@@ -41,24 +41,24 @@ public class CredentialController {
             Authentication authentication,
             Model model) {
 
-        System.out.println("submit-credential called");
-        System.out.println(newCredential.getCredentialId() + " " + newCredential.getUrl());
+        //System.out.println("submit-credential called");
+        //System.out.println(newCredential.getCredentialId() + " " + newCredential.getUrl());
         String username = (String) authentication.getName();
         String newUrl = newCredential.getUrl();
         String credentialIdStr = newCredential.getCredentialId();
         String password = newCredential.getPassword();
-        System.out.println("submitCredential");
-        System.out.println("username: "+username);
-        System.out.println("newUrl: "+newUrl);
-        System.out.println("credentialIdstr: "+credentialIdStr);
-        System.out.println("password: "+password);
+        //System.out.println("submitCredential");
+        //System.out.println("username: "+username);
+        //System.out.println("newUrl: "+newUrl);
+        //System.out.println("credentialIdstr: "+credentialIdStr);
+        //System.out.println("password: "+password);
         SecureRandom random = new SecureRandom();
         byte[] key = new byte[16];
         random.nextBytes(key);
         String encodedKey = Base64.getEncoder().encodeToString(key);
         String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
 
-        System.out.println("encryptedPassword: "+ encryptedPassword);
+        //System.out.println("encryptedPassword: "+ encryptedPassword);
 
 
         if(credentialIdStr.isEmpty()){
@@ -85,7 +85,7 @@ public class CredentialController {
                                     @RequestParam("credentialId") Integer credentialId,
                                     Authentication authentication,
                                     Model model){
-        System.out.println("Inside delete credential");
+        //System.out.println("Inside delete credential");
         Boolean isSuccess = credentialService.deleteCredentials(credentialId);
 
         return "redirect:/result?isSuccess=" + isSuccess;

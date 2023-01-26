@@ -77,14 +77,18 @@ public class FileController {
             @RequestParam("fileUpload") MultipartFile fileUpload,
             Authentication authentication, Model model
     ) {
-        System.out.println("upload called");
+        //System.out.println("upload called");
 
         String username = (String) authentication.getPrincipal();
 
         if (fileUpload.isEmpty()) {
             return "redirect:/result?isSuccess=" + false + "&errorType=" + 1;
         }
-
+        System.out.println(fileUpload.getSize());
+        if (fileUpload.getSize()/(1024*1024)>1)
+        {
+            return "redirect:/result?isSuccess=" + false + "&errorType=" + 1;
+        }
         String fileName = fileUpload.getOriginalFilename();
 
         if (!this.fileService.isFileNameAvailableForUser(username, fileName)) {
@@ -98,8 +102,8 @@ public class FileController {
         List<File> files = this.fileService.getUploadedFiles();
         model.addAttribute("files",files);
 
-        System.out.println(model.asMap().size());
-        System.out.println(files.get(0).getFilename());
+        //System.out.println(model.asMap().size());
+        //System.out.println(files.get(0).getFilename());
 
         return "redirect:/result?isSuccess=" + true;
     }
