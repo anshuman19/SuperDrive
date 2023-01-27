@@ -54,5 +54,6 @@ class SpringSecurityBasicsApplicationTests {
 
         return new Homepage(driver);
     }
+
 }
 
